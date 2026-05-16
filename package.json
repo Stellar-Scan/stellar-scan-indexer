@@ -11,7 +11,8 @@
     "lint": "eslint src tests --ext .ts",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "vitest run",
-    "db:migrate": "tsx scripts/migrate.ts"
+    "db:migrate": "tsx scripts/migrate.ts",
+    "index:once": "tsx scripts/index-once.ts"
   },
   "dependencies": {
     "@stellar/stellar-sdk": "^13.0.0",
