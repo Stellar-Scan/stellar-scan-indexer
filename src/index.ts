@@ -8,6 +8,7 @@ import { EventRepo } from './storage/event_repo.js';
 import { fetchLatestLedger } from './watchers/ledger_watcher.js';
 import { createHealthServer } from './utils/health.js';
 import { ledgersIndexed, lastLedgerGauge } from './utils/metrics.js';
+import { onShutdown } from './shutdown.js';
 
 async function main() {
   const cfg = loadConfig();
@@ -41,6 +42,11 @@ async function main() {
       log.warn({ err }, 'ledger poll failed');
     }
   };
+
+  onShutdown(async () => {
+    log.info('shutting down');
+    await pool.end();
+  });
 
   await tick();
   setInterval(tick, cfg.POLL_INTERVAL_MS);
