@@ -1,5 +1,6 @@
 import Fastify from 'fastify';
 import type { Pool } from 'pg';
+import { registry } from './metrics.js';
 
 export function createHealthServer(port: number, pool: Pool, rpcOk: () => boolean) {
   const app = Fastify({ logger: false });
@@ -10,7 +11,6 @@ export function createHealthServer(port: number, pool: Pool, rpcOk: () => boolea
     return { status: 'ready' };
   });
   app.get('/metrics', async (_, reply) => {
-    const { registry } = await import('./metrics.js');
     reply.header('Content-Type', registry.contentType);
     return registry.metrics();
   });
